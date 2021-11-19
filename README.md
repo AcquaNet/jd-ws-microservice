@@ -22,37 +22,18 @@ This tool allow get all information need it from JDE Enterprise Server Manager t
 
  - [Docker](  https://docs.docker.com/get-docker/ "Docker"). JDE Web Service Microserver run under Docker container.
 
- 
-## Installation
+ ## JD Generate Ini Files
+
+This tool allow get all information need it from JDE Enterprise Server Manager to generate ini files used by JD Web Service Microservice.
+
+### Installation
 
 Download [JD Generate Ini Files]( http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-ini-files/1.0.0/jd-create-ini-files-1.0.0-jar-with-dependencies.jar "Generator") - latest release: 
 
 ```
 curl http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-ini-files/1.0.0/jd-create-ini-files-1.0.0-jar-with-dependencies.jar --output jd-create-ini-files-1.0.0-jar-with-dependencies.jar
 ```
-
-Download [JD Generate Jar Files]( http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-jar-files/1.0.0/jd-create-jar-files-1.0.0-jar-with-dependencies.jar "Generator") - latest release: 
-
-```
-curl http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-jar-files/1.0.0/jd-create-jar-files-1.0.0-jar-with-dependencies.jar --output jd-create-jar-files-1.0.0-jar-with-dependencies.jar
-```
-
-Download [JD Docker Composer Files]( http://157.245.236.175:8081/artifactory/libs-release/com/atina/jd-docker-files/1.0.0/jd-docker-files-1.0.0.zip "Docker Composer Files") - latest release: 
-
-```
-curl http://157.245.236.175:8081/artifactory/libs-release/com/atina/jd-docker-files/1.0.0/jd-docker-files-1.0.0.zip --output jd-docker-files-1.0.0.zip
-```
- 
-
-
-    
-
-    
-## Uses
-
 ### Run JD Generate Ini Files
-
-This tool allow get all information need it from JDE Enterprise Server Manager to generate ini files used by JD Web Service Microservice.
  
 ```bash
   java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar [OPTIONS]
@@ -92,10 +73,17 @@ build_jde_libs
 
 ```
 
-### Run JD Generate Jars Files
+## JD Generate Jars Files
 
-This tool will generate all jars files need it by JD Web Service Microserice.
+This tool will generate all jars files need it by JD Web Service Microservice.
 
+### Installation
+
+Download [JD Generate Jar Files]( http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-jar-files/1.0.0/jd-create-jar-files-1.0.0-jar-with-dependencies.jar "Generator") - latest release: 
+
+```
+curl http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-jar-files/1.0.0/jd-create-jar-files-1.0.0-jar-with-dependencies.jar --output jd-create-jar-files-1.0.0-jar-with-dependencies.jar
+```
 
 #### Preparing folders
 
@@ -106,8 +94,8 @@ jde-lib-bundle
       ├─ JDBC_Vendor_Drivers
       └─ system
          │─ Classes 
-         │─ JAS  (Source: )     
-         └─ WS  (Source: )
+         │─ JAS    
+         └─ WS
  
 ```
 
@@ -145,21 +133,86 @@ Output
 ------------------------------------------------------------------------
 GENERATION SUCESSS
 ------------------------------------------------------------------------
- File: \tmp\build_jde_libs\jdbj.ini generated
- File: \tmp\build_jde_libs\jdeinterop.ini generated
- File: \tmp\build_jde_libs\jdelog.properties generated
+JDE Library bundle has been copied to: C:\tmp\build_jde_libs\jde-lib-wrapped-1.0.0.jar
+JDE WS has been copied to: C:\tmp\build_jde_libs\StdWebService-1.0.0.jar
 ------------------------------------------------------------------------
 ```
 
-#### Create JD Microservice
+It will create the following files:
 
-JD Microservice
+```
+build_jde_libs
+      ├─ jde-lib-wrapped-1.0.0.jar
+      └─ StdWebService-1.0.0.jar
 
-Unzip **jd-docker-files-1.0.0.zip** in a temporal folder.
+```
+
+#### Deploy artifact to Local Repository - Optional
+
+At startup, JD Microservice has the option to get these libraries from an internal repository.
+This optional. 
+
+In case you want to use a local repository, exectute the following command:
+
+```
+mvn deploy:deploy-file -DgroupId=com.jdedwards -DartifactId=jde-lib-wrapped -Dversion=1.0.0 -DrepositoryId=repo-central -Dpackaging=jar -Dfile=\tmp\build_jde_libs\jde-lib-wrapped-1.0.0.jar -Durl=http://localrepo:8081/artifactory/libs-release
+mvn deploy:deploy-file -DgroupId=com.jdedwards -DartifactId=StdWebService -Dversion=1.0.0 -DrepositoryId=repo-central -Dpackaging=jar -Dfile=\tmp\build_jde_libs\StdWebService-1.0.0.jar -Durl=http://localrepo:8081/artifactory/libs-release
+```
+
+
+
+
+## Get and Run JD Microservice
+
+### Installation
+
+Download [JD Docker Composer Files]( http://157.245.236.175:8081/artifactory/libs-release/com/atina/jd-docker-files/1.0.0/jd-docker-files-1.0.0.zip "Docker Composer Files") - latest release: 
+
+```
+curl http://157.245.236.175:8081/artifactory/libs-release/com/atina/jd-docker-files/1.0.0/jd-docker-files-1.0.0.zip --output jd-docker-files-1.0.0.zip
+```
+
+Unzip JD Docker Composer Files (**jd-docker-files-1.0.0.zip**) downloaded in a temporal folder.
 
 ```bash
 7z e jd-docker-files-1.0.0.zip
 ```
+
+### Configuration
+
+Edit .env file and change the following values:
+
+#### Customer repository
+
+For Local repository:
+
+| Parameter                | Comment      | 
+| -------------------------- | ------------------ |
+|CUSTOMER_REPOSITORY_PROTOCOL   |http|
+|CUSTOMER_REPOSITORY_URL        |local-repository:8081/artifactory/libs-release|
+|JDE_GET_LIB_WRAPPED_UPDATE_FROM_REPOSITORY|1|
+|JDE_GET_LIB_WEB_SERVICE_FROM_REPOSITORY|1|
+
+For non Local repository:
+
+| Parameter                | Comment      | 
+| -------------------------- | ------------------ |
+|CUSTOMER_REPOSITORY_PROTOCOL   ||
+|CUSTOMER_REPOSITORY_URL        ||
+|JDE_GET_LIB_WRAPPED_UPDATE_FROM_REPOSITORY|0|
+|JDE_GET_LIB_WEB_SERVICE_FROM_REPOSITORY|0|
+
+#### dns defintion
+
+| Parameter                | Comment      | 
+| -------------------------- | ------------------ |
+|JDE_MICROSERVER_ENTERPRISE_SERVER_NAME   |JDE-ENT|
+|JDE_MICROSERVER_ENTERPRISE_SERVER_IP        |222.222.222.1|
+|JDE_MICROSERVER_ENTERPRISE_DB_NAME|JDE-DB|
+|JDE_MICROSERVER_ENTERPRISE_DB_IP|222.222.222.2|
+
+
+### Create and Run JD Microservice
 
 Run following docker commands:
 
@@ -203,22 +256,21 @@ docker exec -it jd-atina-microserver cat /tmp/start.log
 -LICENSE--------------------------------------------
    Code:  demo
 -MICROSERVER----------------------------------------
-   JDE_MICROSERVER_SECRET_KEY:  123456789012345678901234567890123456789012345678901234567890
    JDE_MICROSERVER_TOKEN_EXPIRATION:  3000000
-   JDE_MICROSERVER_ENTERPRISE_SERVER_NAME:  JDE-ALPHA-ENT
-   JDE_MICROSERVER_ENTERPRISE_SERVER_IP:  138.91.73.161
-   JDE_MICROSERVER_ENTERPRISE_DB_NAME:  JDE-ALPHA-SQL
-   JDE_MICROSERVER_ENTERPRISE_DB_IP:  65.52.119.187
+   JDE_MICROSERVER_ENTERPRISE_SERVER_NAME:  JDE-ENT
+   JDE_MICROSERVER_ENTERPRISE_SERVER_IP:  122.21.23.261
+   JDE_MICROSERVER_ENTERPRISE_DB_NAME:  JDE-DATABASE
+   JDE_MICROSERVER_ENTERPRISE_DB_IP:  125.22.139.57
    JDE_MICROSERVER_MOCKING:  0
 ----------------------------------------------------
 ADDITIONAL SCRIPT:
-127.0.0.1       localhost
-::1     localhost ip6-localhost ip6-loopback
-fe00::0 ip6-localnet
-ff00::0 ip6-mcastprefix
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-172.28.0.2      bcd05e8e5bd0
+  127.0.0.1       localhost
+  ::1     localhost ip6-localhost ip6-loopback
+  fe00::0 ip6-localnet
+  ff00::0 ip6-mcastprefix
+  ff02::1 ip6-allnodes
+  ff02::2 ip6-allrouters
+  172.28.0.2      bcd05e8e5bd0
 ----------------------------------------------------
  Check log cat /tmp/jde/JDEConnectorServerLog/jd_atina_server_2021-11-18.0.log
 ```
@@ -245,3 +297,23 @@ docker exec -it jd-atina-microserver cat cat /tmp/jde/JDEConnectorServerLog/jde_
 
 
  
+## JD Docker Composer Files - Environment .env detail
+ 
+### Atina Repository
+
+This repository is used to get updates for JD Microservice.
+
+| Parameter                | Comment      | 
+| -------------------------- | ------------------ |
+|ATINA_REPOSITORY_PROTOCOL   |Atina repository Protocol|
+|ATINA_REPOSITORY_URL        |Atina repository URL |
+
+
+This is the customer repository is used to artifact:
+This is optional.
+
+
+| Parameter                | Comment      | 
+| -------------------------- | ------------------ |
+|CUSTOMER_REPOSITORY_PROTOCOL|//Deployment Server/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib/*|
+|CUSTOMER_REPOSITORY_URL     | //Deployment Server/E920\DV920/java/sbfjars/* |
