@@ -385,7 +385,6 @@ docker-compose -f docker-compose-dist.yml up --no-start
 Copy files into Container
 
 ```bash
-docker cp /tmp/build_jde_libs/JDV920 jd-atina-microserver:/tmp/jde/config
 docker cp /tmp/build_jde_libs/JPS920 jd-atina-microserver:/tmp/jde/config
 docker cp /tmp/build_jde_libs/jde-lib-wrapped-1.0.0.jar jd-atina-microserver:/tmp/jde
 docker cp /tmp/build_jde_libs/StdWebService-1.0.0.jar jd-atina-microserver:/tmp/jde
