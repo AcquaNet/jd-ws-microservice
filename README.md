@@ -47,7 +47,9 @@ This tool allow get all information need it from JDE Enterprise Server Manager t
    - //Deplo/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib
    - //Deplo/E920/DV920/java/sbfjars
  
- - JAVA OpenJDK 8
+ - JAVA Open JDK 8
+
+ - MAVEN
 
  - Oracle JD Edwards EnterpriseOne Server Manager credential. Ex. http://server:8999/manage/
 
@@ -89,41 +91,76 @@ curl http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-cre
 ### Run JD Generate Ini Files
  
 ```bash
-  java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar [OPTIONS]
+  java -jar jd-create-ini-files-1.0.0-jar-with-dependencies.jar [OPTIONS]
 
   OPTIONS:                                                                       
-  -u, --user[=<user>]           JDE User for Enterprise Server Manager
-  -p, --password[=<password>]   JDE Password for Enterprise Server Manager
-  -s, --server[=<server>]       JDE URL of Server Manager
-  -w, --environment[=<server>]  JDE URL of Server Manager
+Options category 'startup':
+  --debug [-d] (a string; default: "N")
+    Debug Option
+  --environment [-e] (a string; default: "")
+    JDE Environment
+  --password [-p] (a string; default: "")
+    JDE Password for Enterprise Server Manager
+  --server [-s] (a string; default: "")
+    JDE URL of Server Manager
+  --user [-u] (a string; default: "")
+    JDE User for Enterprise Server Manager
 
 ```
 Usage Exampes
 
 ```bash
-java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar -u jde_server_manager_user -p password_server_manager -s http://server-manager:8999/manage
+java -jar jd-create-ini-files-1.0.0-jar-with-dependencies.jar -u jde_admin -p XXXXXXX -s http://mdx-alpha-wls.westus.cloudapp.azure.com:8999/manage -e JDV920
+
 ```
 
 Output 
 
 ```bash
+Folder : /tmp/build_jde_libs/JPS920 has been created
+
+Authenticating : http://mdx-alpha-wls.westus.cloudapp.azure.com:8999/manage
+         Cookie: 044GXl43PnHkTe1L3AMc/siNkFOIoll+S4ngsdGnNkS7Qg=MDA5MDE1MDE1amRlX2FkbWluMTM0LjIwOS4yMTEuMjQ4MTM0LjIwOS4yMTEuMjQ4MTYzNzYwNzAxMTIzOQ==
+Getting Server Groups : http://mdx-alpha-wls.westus.cloudapp.azure.com:8999/manage
+
+Select HTML Instance for environment JPS920:
+0 - alpha_db
+1 - alpha_dep
+2 - alpha_dv920
+3 - alpha_ent
+4 - html_ps920
+Q - Quit
+4
+Option Selected: 4
+
+JDE Instance selected: html_ps920
+
+Getting Instance Values: http://mdx-alpha-wls.westus.cloudapp.azure.com:8999/manage for Instance Name 'html_ps920'
+ Processing File: jdbj.ini
+ Processing File: jdeinterop.ini
+ Processing File: jdelog.properties
+ Processing File: settings.xml
+
 ------------------------------------------------------------------------
 GENERATION SUCESSS
 ------------------------------------------------------------------------
  File: \tmp\build_jde_libs\JPS920\jdbj.ini generated
  File: \tmp\build_jde_libs\JPS920\jdeinterop.ini generated
  File: \tmp\build_jde_libs\JPS920\jdelog.properties generated
+ File: \tmp\build_jde_libs\settings.xml generated
 ------------------------------------------------------------------------
+
 ```
 
 It will create the following files:
 
 ```
 build_jde_libs
-      ├─ jdbj.ini
-      │─ jdeinterop.ini
-      └─ jdelog.properties
-
+      ├─ settings.xml
+      ├─ JPS920
+      ├─────├─ jdbj.ini
+      ├─────├─ jdeinterop.ini
+      └─────└─ jdelog.properties            
 ```
 
 Adding manually "tnsnames.ora" for Oracle RDBMS based installations only.
@@ -156,29 +193,91 @@ jde-lib-bundle
 Copy files from JDE Deploment Server to the corresponding folders:
   
         
-| Destination                       | Source      | Comments                                                                      |
-| -------------------------- | ------------------ | ----------------------------------------------------------------------------- |
-|JDBC_Vendor_Drivers               |//Deployment Server/E920/MISC/sqljdbc42.jar | Obtain the JDBC drivers from the database vendor|
-|system->Classes                   |//Deployment Server/E920/system/Classes\*   |                                                 |
-|system->JAS                       |//Deployment Server/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib/*| |
-|system->WS                        | //Deployment Server/E920\DV920/java/sbfjars/* | |
+| Destination                       | Source      |
+| -------------------------- | ------------------ |
+|JDBC_Vendor_Drivers               | //Deployment Server/E920/MISC/* |
+|system->Classes                   | //Deployment Server/E920/system/Classes\*   |
+|system->JAS                       | //Deployment Server/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib/*|
+|system->WS                        | //Deployment Server/E920\DV920/java/sbfjars/* |
 
  
 #### Create Jars File
 
 ```bash
-  java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar [OPTIONS]
+Usage: java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar OPTIONS
 
-  OPTIONS:                                                                       
-  -u, --user[=<user>]         JDE User for Enterprise Server Manager
-  -p, --password[=<password>] JDE Password for Enterprise Server Manager
-  -s, --server[=<server>]     JDE URL of Server Manager
-
+Options category 'startup':
+  --jdbcDriver [-j] (a string; default: "/tmp/build_jde_libs/JDBC_Vendor_Drivers")
+    Enter JDBC Driver Folder
+  --jdeInstallPath [-i] (a string; default: "/tmp/build_jde_libs/")
+    Enter JDE Path installed
+  --localRepo [-r] (a string; default: "")
+    Enter Maven Local Repo
+  --settings [-s] (a string; default: "")
+    settings.xml to use Ex. /apache-maven-3.8.1/conf/settings.xml
+  --version [-o] (a string; default: "1.0.0")
+    Enter Version
 ```
-Usage Exampes
+
+#### How define local Repository (localRepo option)
+
+Running this command you can get where the local repository is defined:
 
 ```bash
-java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar -u jde_server_manager_user -p password_server_manager -s http://server-manager:8999/manage
+mvn help:evaluate -Dexpression=settings.localRepository
+```
+
+```bash
+[INFO]
+[INFO] ------------------< org.apache.maven:standalone-pom >-------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- maven-help-plugin:3.2.0:evaluate (default-cli) @ standalone-pom ---
+[INFO] No artifact parameter specified, using 'org.apache.maven:standalone-pom:pom:1' as project.
+[INFO]
+/root/.m2/repository  <=====================
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.301 s
+[INFO] Finished at: 2021-11-22T20:31:42Z
+[INFO] ------------------------------------------------------------------------
+```
+
+#### How configure global level settings.xml to have correct repositories. (settings option)
+
+* Get Maven Home locaction:
+
+```bash
+mvn --version
+```
+
+```bash
+Apache Maven 3.6.3
+Maven home: /usr/share/maven  < ==============================
+Java version: 1.8.0_292, vendor: Private Build, runtime: /usr/lib/jvm/java-8-openjdk-amd64/jre
+Default locale: en, platform encoding: UTF-8
+OS name: "linux", version: "5.4.0-73-generic", arch: "amd64", family: "unix"
+
+```
+
+In this example the setting is: *[Maven home]*  + *conf/settings.xml*
+ 
+* Configure Setting.xml
+
+Copy Atina profile from this setting  *\tmp\build_jde_libs\settings.xml* to *[Maven home]*  + *conf/settings.xml*
+ 
+Set Atina profile as default.
+
+### Usage Generate Jars Files Exampes
+
+Run following command:
+
+(Note use previous steps to define -r and -s options )
+
+```bash
+java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar -i /tmp/build_jde_libs/ -j /tmp/build_jde_libs/JDBC_Vendor_Drivers -r /root/.m2/repository/ -o 1.0.0 -s /usr/share/maven/conf/settings.xml
 ```
 
 Output 
@@ -187,8 +286,8 @@ Output
 ------------------------------------------------------------------------
 GENERATION SUCESSS
 ------------------------------------------------------------------------
-JDE Library bundle has been copied to: C:\tmp\build_jde_libs\jde-lib-wrapped-1.0.0.jar
-JDE WS has been copied to: C:\tmp\build_jde_libs\StdWebService-1.0.0.jar
+JDE Library bundle has been copied to: /tmp/build_jde_libs/jde-lib-wrapped-1.0.0.jar
+JDE WS has been copied to: /tmp/build_jde_libs/StdWebService-1.0.0.jar
 ------------------------------------------------------------------------
 ```
 
@@ -280,21 +379,22 @@ Run following docker commands:
 Create Container
 
 ```bash
-docker-compose up --no-start
+docker-compose -f docker-compose-dist.yml up --no-start
 ```
 
 Copy files into Container
 
 ```bash
+docker cp /tmp/build_jde_libs/JDV920 jd-atina-microserver:/tmp/jde/config
 docker cp /tmp/build_jde_libs/JPS920 jd-atina-microserver:/tmp/jde/config
 docker cp /tmp/build_jde_libs/jde-lib-wrapped-1.0.0.jar jd-atina-microserver:/tmp/jde
-docker cp /tmp/build_jde_libs/StdWebService-1.0.0.jar jd-atina-microserver:/tmp/jd
+docker cp /tmp/build_jde_libs/StdWebService-1.0.0.jar jd-atina-microserver:/tmp/jde
 ```
 
 Run Container
 
 ```bash
-docker-compose start
+docker-compose -f docker-compose-dist.yml start
 ```
 
 Check starting process
@@ -402,7 +502,7 @@ Usage: java -jar jd-check-microservice OPTIONS
 Usage Exampes
 
 ```bash
-java -jar target/jd-check-microservice-1.0.0-jar-with-dependencies.jar -u JDE -w XXXXXX! -e JDV920 -r *ALL -s 192.168.99.100 -p 8077 -m TestLoggindAndGetAddressBookWS -a 28
+java -jar jd-check-microservice-1.0.0-jar-with-dependencies.jar -u JDE -w XXXXXX -e JDV920 -r *ALL -s localhost -p 8077 -m TestLoggindAndGetAddressBookWS -a 28
 ```
 
 Output 
