@@ -32,8 +32,7 @@ The following implementation steps need to be performed before working with JD W
 
 * Start JD Web Service Microservice
 
-This tool allow get all information need it from JDE Enterprise Server Manager to generate ini files used by JD Web Service Microservice.
-
+* Install Mulesoft JDE WS Community Edition Connector 3.
 
 
 
