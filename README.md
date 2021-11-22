@@ -109,7 +109,7 @@ Options category 'startup':
 Usage Exampes
 
 ```bash
-java -jar jd-create-ini-files-1.0.0-jar-with-dependencies.jar -u jde_admin -p XXXXXXX -s http://mdx-alpha-wls.westus.cloudapp.azure.com:8999/manage -e JDV920
+java -jar jd-create-ini-files-1.0.0-jar-with-dependencies.jar -u jde_admin -p XXXXXXX -s http://server-manager:8999/manage -e JDV920
 
 ```
 
@@ -118,9 +118,9 @@ Output
 ```bash
 Folder : /tmp/build_jde_libs/JPS920 has been created
 
-Authenticating : http://mdx-alpha-wls.westus.cloudapp.azure.com:8999/manage
+Authenticating : http://server-manager:8999/manage
          Cookie: 044GXl43PnHkTe1L3AMc/siNkFOIoll+S4ngsdGnNkS7Qg=MDA5MDE1MDE1amRlX2FkbWluMTM0LjIwOS4yMTEuMjQ4MTM0LjIwOS4yMTEuMjQ4MTYzNzYwNzAxMTIzOQ==
-Getting Server Groups : http://mdx-alpha-wls.westus.cloudapp.azure.com:8999/manage
+Getting Server Groups : http://server-manager:8999/manage
 
 Select HTML Instance for environment JPS920:
 0 - alpha_db
@@ -134,7 +134,7 @@ Option Selected: 4
 
 JDE Instance selected: html_ps920
 
-Getting Instance Values: http://mdx-alpha-wls.westus.cloudapp.azure.com:8999/manage for Instance Name 'html_ps920'
+Getting Instance Values: http://server-manager:8999/manage for Instance Name 'html_ps920'
  Processing File: jdbj.ini
  Processing File: jdeinterop.ini
  Processing File: jdelog.properties
