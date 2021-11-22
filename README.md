@@ -1,5 +1,36 @@
 
-# JD Web Service Microservice
+# MULE JDE WS Connector Community Edition 3 with JD Web Service Microservice
+
+JDE WS CE Connector is a connector used to consume JDE Web Services from Mulesoft applications. 
+This connector allow to Mulesoft connecto to JDE Web Services using JD Web Services Microservice instead use JDE Applications Server.
+
+JD Web Service Microservice is point-to-point component-based interoperability models that enable third-party applications and JD Edwards EnterpriseOne to share logic and data
+
+It provides:
+
+* Access to JDE Web Services.
+
+* Session management.
+
+* Connection pooling.
+
+* Metadata introspection.
+
+Using connectors provides additional benefits, such as:
+
+* JD Web Service Microservice are scalable.
+
+* JD Web Service Microservice provide multi-threading.
+
+* JD Web Service Microservice enable concurrent users.
+
+## Implementations
+
+The following implementation steps need to be performed before working with JD Web Service Microservice:
+
+* Set up a configuration
+
+* Start JD Web Service Microservice
 
 This tool allow get all information need it from JDE Enterprise Server Manager to generate ini files used by JD Web Service Microservice.
 
@@ -22,13 +53,35 @@ This tool allow get all information need it from JDE Enterprise Server Manager t
 
  - [Docker](  https://docs.docker.com/get-docker/ "Docker"). JDE Web Service Microserver run under Docker container.
 
- ## JD Generate Ini Files
+ ## JD Generate Configuration Files
 
-This tool allow get all information need it from JDE Enterprise Server Manager to generate ini files used by JD Web Service Microservice.
+JD WS Microservice needs the following ini files according to your environment:
+
+* jdbj.ini
+
+* jdeinterop.ini
+
+* jdelog.properties
+
+* tnsnames.ora" (for Oracle RDBMS based installations only)
+
+You can configure it manually following JDE manuals or you can use this tools to help you.
+
+This tool help to you to generate a base ini files. 
+
+It takes all information from JDE Enterprise Server Manager using [REST API for Server Manager](https://docs.oracle.com/en/applications/jd-edwards/cross-product/9.2/eoira/ "REST API for Server Manager") 
+
+The tooll will require to select the HTML Client instance according to your environment. 
+
+You will need to review the jdeinterop.ini and jdbj.ini files before deploy it on JD WS Microservice.
+
+JDE Guides:
+
+* [Understanding jdeinterop.ini File]( https://docs.oracle.com/cd/E24705_01/doc.91/e24221/jdeinterop_java.htm#EOTCN00333 "Understanding jdeinterop.ini File")
 
 ### Installation
 
-Download [JD Generate Ini Files]( http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-ini-files/1.0.0/jd-create-ini-files-1.0.0-jar-with-dependencies.jar "Generator") - latest release: 
+Download [JD Generate Configuration Files]( http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-ini-files/1.0.0/jd-create-ini-files-1.0.0-jar-with-dependencies.jar "Generator") - latest release: 
 
 ```
 curl http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-ini-files/1.0.0/jd-create-ini-files-1.0.0-jar-with-dependencies.jar --output jd-create-ini-files-1.0.0-jar-with-dependencies.jar
@@ -39,10 +92,10 @@ curl http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-cre
   java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar [OPTIONS]
 
   OPTIONS:                                                                       
-  -u, --user[=<user>]         JDE User for Enterprise Server Manager
-  -p, --password[=<password>] JDE Password for Enterprise Server Manager
-  -s, --server[=<server>]     JDE URL of Server Manager
-  -w, --environment[=<server>]     JDE URL of Server Manager
+  -u, --user[=<user>]           JDE User for Enterprise Server Manager
+  -p, --password[=<password>]   JDE Password for Enterprise Server Manager
+  -s, --server[=<server>]       JDE URL of Server Manager
+  -w, --environment[=<server>]  JDE URL of Server Manager
 
 ```
 Usage Exampes
@@ -73,6 +126,7 @@ build_jde_libs
 
 ```
 
+Adding manually "tnsnames.ora" for Oracle RDBMS based installations only.
 ## JD Generate Jars Files
 
 This tool will generate all jars files need it by JD Web Service Microservice.
@@ -102,10 +156,10 @@ jde-lib-bundle
 Copy files from JDE Deploment Server to the corresponding folders:
   
         
-| Destination                       | Source      | Comments                                                                 |
-| -------------------------- | ------------------ | --------------------------------------------------------------------------- |
-|JDBC_Vendor_Drivers               |//Deployment Server/E920/MISC/sqljdbc42.jar | JDBC driver will be the corresponding to database used by JD Edwards.|
-|system->Classes                   |//Deployment Server/E920/system/Classes\*   | |
+| Destination                       | Source      | Comments                                                                      |
+| -------------------------- | ------------------ | ----------------------------------------------------------------------------- |
+|JDBC_Vendor_Drivers               |//Deployment Server/E920/MISC/sqljdbc42.jar | Obtain the JDBC drivers from the database vendor|
+|system->Classes                   |//Deployment Server/E920/system/Classes\*   |                                                 |
 |system->JAS                       |//Deployment Server/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib/*| |
 |system->WS                        | //Deployment Server/E920\DV920/java/sbfjars/* | |
 
@@ -184,6 +238,13 @@ Edit .env file and change the following values:
 
 #### Customer repository
 
+Microservice Server
+
+| Parameter                | Comment      | 
+| -------------------------- | ------------------ |
+|JDE_MICROSERVER_IP   |172.28.0.2|
+|JDE_MICROSERVER_PORT |8077|
+ 
 For Local repository:
 
 | Parameter                | Comment      | 
@@ -236,7 +297,7 @@ Run Container
 docker-compose start
 ```
 
-Check process
+Check starting process
 
 ```bash
 docker exec -it jd-atina-microserver cat /tmp/start.log
@@ -277,7 +338,7 @@ ADDITIONAL SCRIPT:
 
 
 ```bash
-docker exec -it jd-atina-microserver cat cat /tmp/jde/JDEConnectorServerLog/jde_atina_server_2021-11-18.0.log
+docker exec -it jd-atina-microserver cat /tmp/jde/JDEConnectorServerLog/jde_atina_server_2021-11-18.0.log
 ```
 
 ```bash
@@ -288,7 +349,11 @@ docker exec -it jd-atina-microserver cat cat /tmp/jde/JDEConnectorServerLog/jde_
 19:27:07.064 [main] INFO  c.a.jde.jdeconnectorserver.server.JDERestServer - *-------------------------------------*
 ```
 
+The other way to see the logs is the following command:
 
+```bash
+docker logs jd-atina-microserver
+```
 
 
 
@@ -297,6 +362,68 @@ docker exec -it jd-atina-microserver cat cat /tmp/jde/JDEConnectorServerLog/jde_
 
 
  
+## JDE Check JD Microservice
+ 
+This tool is used to test JD Microservice. 
+It will invoke a simple WS.
+
+### Installation
+
+Download [JD Check JD Microservice]( http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-check-microservice/1.0.0/jd-check-microservice-1.0.0-jar-with-dependencies.jar "Generator") - latest release: 
+
+```
+curl http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-check-microservice/1.0.0/jd-check-microservice-1.0.0-jar-with-dependencies.jar --output jd-check-microservice-1.0.0-jar-with-dependencies.jar
+```
+### Run JD Check Microservice
+ 
+```bash
+Usage: java -jar jd-check-microservice OPTIONS
+
+   Options category 'startup':
+
+  --mode [-m] (a string; default: "TestLoggindAndGetAddressBookWS")
+    Modes
+  --user [-u] (a string; default: "")
+    JDE User
+  --password [-w] (a string; default: "")
+    JDE Password
+  --environment [-e] (a string; default: "")
+    JDE Environment
+  --role [-r] (a string; default: "")
+    JDE Role
+  --serverName [-s] (a string; default: "")
+    JD Micreserver Name or IP
+  --serverPort [-p] (a string; default: "")
+    JD Micreserver Port
+  --addressbookno [-a] (a string; default: "")
+    Address Book No
+
+```
+Usage Exampes
+
+```bash
+java -jar target/jd-check-microservice-1.0.0-jar-with-dependencies.jar -u JDE -w XXXXXX! -e JDV920 -r *ALL -s 192.168.99.100 -p 8077 -m TestLoggindAndGetAddressBookWS -a 28
+```
+
+Output 
+
+```bash
+Checking Microservice...
+user=JDE, environment=JDV920, role=*ALL, serverName=192.168.99.100, serverPort=8077, mode=TestLoggindAndGetAddressBookWS, addressbookno=1, sessionId=, transactionId=
+Transaction ID: 20211122124518
+User User: JDE in environment JDV920 with *ALL connected with Session ID [-1636010069]
+WS JP010000.AddressBookManager.getAddressBook has been called correctly
+Logout [0]
+------------------------------------------------------------------------
+CHECK SUCESSS
+------------------------------------------------------------------------
+User User: JDE in environment JDV920 with *ALL connected with Session ID -1636010069
+Address Book Name: Financial/Distribution Company --
+User User: JDE in environment JDV920 with *ALL disconnected. Current session ID 0
+------------------------------------------------------------------------
+``` 
+## Install Mulesoft JDE WS CE Connector
+
 ## JD Docker Composer Files - Environment .env detail
  
 ### Atina Repository
