@@ -266,9 +266,11 @@ In this example the setting is: *[Maven home]*  + *conf/settings.xml*
  
 * Configure Setting.xml
 
-Copy Atina profile from this setting  *\tmp\build_jde_libs\settings.xml* to *[Maven home]*  + *conf/settings.xml*
- 
-Set Atina profile as default.
+By default, this process will use settings.xml created in the previous process.
+
+You can configure you own settings.xml adding profile inside *\tmp\build_jde_libs\settings.xml*
+
+Remember to configure this profile as default.
 
 ### Usage Generate Jars Files Exampes
 
@@ -277,7 +279,7 @@ Run following command:
 (Note use previous steps to define -r and -s options )
 
 ```bash
-java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar -i /tmp/build_jde_libs/ -j /tmp/build_jde_libs/JDBC_Vendor_Drivers -r /root/.m2/repository/ -o 1.0.0 -s /usr/share/maven/conf/settings.xml
+java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar -i /tmp/build_jde_libs/ -j /tmp/build_jde_libs/JDBC_Vendor_Drivers -r /root/.m2/repository/ -o 1.0.0 -s /tmp/build_jde_libs/settings.xml
 ```
 
 Output 
