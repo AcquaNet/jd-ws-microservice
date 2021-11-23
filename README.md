@@ -524,6 +524,35 @@ User User: JDE in environment JDV920 with *ALL disconnected. Current session ID 
 ``` 
 ## Install Mulesoft JDE WS CE Connector
 
+The Atina JDE Web Service Connector CE provides interoperability with Oracle’s JD Edwards EnterpriseOne™ it allow consume all JDE Web Services published
+
+### Installation
+
+Download [ Atina JDE Web Service Connector CE]( http://157.245.236.175:8081/artifactory/libs-release/com/atina/jd-atina-connector/1.0.0/jd-atina-connector-1.0.0.zip "Generator") - latest release: 
+
+```
+curl  http://157.245.236.175:8081/artifactory/libs-release/com/atina/jd-atina-connector/1.0.0/jd-atina-connector-1.0.0.zip -o jd-atina-connector-1.0.0.zip
+```
+
+Install From the Studio Help Menu:
+
+* Click Help > Install New Software.
+
+* Click Add > Then, click Archive.. and select jd-atina-connector-1.0.0.zip downloaded
+
+* Expand a Community Category and click the checkbox for the connector to install.
+
+* Click Next, Next, I accept the terms of the license agreement, Finish, and restart Studio when prompted.
+
+* From a Mule Project in Studio, search for the connector and drag it to the Canvas.
+
+
+
+
+
+
+
+
 ## JD Docker Composer Files - Environment .env detail
  
 ### Atina Repository
