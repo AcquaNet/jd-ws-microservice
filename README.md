@@ -56,21 +56,23 @@ The following implementation steps need to be performed before working with JD W
 
  - JDE credential for HTML Client. User, Pasword, Environment and Role.
 
+ - Oracle JD Edwards EnterpriseOne Server Manager credential. Ex. http://server:8999/manage/
+
  - Following folder inside JDE Deployment Server:
    - //Deplo/E920/MISC
    - //Deplo/E920/system/Classes
    - //Deplo/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib
    - //Deplo/E920/DV920/java/sbfjars
  
- - JAVA Open JDK 8
+ - JAVA Open JDK 8 
 
  - MAVEN
 
- - Oracle JD Edwards EnterpriseOne Server Manager credential. Ex. http://server:8999/manage/
-
  - [Docker](  https://docs.docker.com/get-docker/ "Docker"). JDE Web Service Microserver run under Docker container.
 
- ## JD Generate Configuration Files
+ ## JD Generate Configuration Files Tool
+
+![Main Image](images/initool.png "Main")
 
 JD WS Microservice needs the following ini files according to your environment:
 
@@ -96,14 +98,16 @@ JDE Guides:
 
 * [Understanding jdeinterop.ini File]( https://docs.oracle.com/cd/E24705_01/doc.91/e24221/jdeinterop_java.htm#EOTCN00333 "Understanding jdeinterop.ini File")
 
-### Installation
+### Using JAVA APP
+
+It will require openjdk 8.
 
 Download [JD Generate Configuration Files]( http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-ini-files/1.0.0/jd-create-ini-files-1.0.0-jar-with-dependencies.jar "Generator") - latest release: 
 
 ```
 curl http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-ini-files/1.0.0/jd-create-ini-files-1.0.0-jar-with-dependencies.jar --output jd-create-ini-files-1.0.0-jar-with-dependencies.jar
 ```
-### Run JD Generate Ini Files
+### Run JD Generate Ini Files Tool
  
 ```bash
   java -jar jd-create-ini-files-1.0.0-jar-with-dependencies.jar [OPTIONS]
@@ -179,6 +183,14 @@ build_jde_libs
 ```
 
 Adding manually "tnsnames.ora" for Oracle RDBMS based installations only.
+
+### Using Docker
+
+```bash
+docker run --rm -v /tmp/build_jde_libs:/tmp/build_jde_libs/ -i --name jd-create-ini-files 92455890/jd-create-ini-files:1.0.0 jde_admin jde_password JPS920 http://servermanager.com:8999/manage
+```
+
+
 ## JD Generate Jars Files
 
 This tool will generate all jars files need it by JD Web Service Microservice.
