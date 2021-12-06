@@ -26,7 +26,19 @@ It provides:
 
 * Metadata introspection.
 
+## JD ATINA Rest API Microservice
 
+It's a simple Microservice used to epose JDE Web Services as Rest API.
+
+Any third party sofware with HTTP Connector can consume WS.
+
+![Main Image](images/rest-api.png "Rest API Server")
+
+## JD Atina Mule 3/4 CE Connector
+
+It's a Mule CE connector to consume Web Service from Mulesoft Applications.
+
+![Main Image](images/MuleConnector.png "Mule JDE Connector")
 
 ## Implementations
 
@@ -34,7 +46,7 @@ The following implementation steps need to be performed before working with JD W
 
 * Set up a configuration
 
-* Start JD Web Service Microservice
+* Start JD Web Services Microservice / JDE Rest API Microservice
 
 * Install Mulesoft JDE WS Community Edition Connector 3.
 
