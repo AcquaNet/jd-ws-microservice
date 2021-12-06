@@ -72,7 +72,7 @@ The following implementation steps need to be performed before working with JD W
 
  ## JD Generate Configuration Files Tool
 
-![Main Image](images/initool.png "Main")
+![Configuration File Tool Image](images/IniTool.png "Configuration File Tool")
 
 JD WS Microservice needs the following ini files according to your environment:
 
