@@ -1,10 +1,20 @@
 
-# MULE JDE WS Connector Community Edition 3 with JD Web Service Microservice
+# JD ATINA Microservices
 
-JDE WS CE Connector is a connector used to consume JDE Web Services from Mulesoft applications. 
-This connector allow to Mulesoft connecto to JDE Web Services using JD Web Services Microservice instead use JDE Applications Server.
+JD ATINA Microservices is made up of a series of the following services:
 
-JD Web Service Microservice is point-to-point component-based interoperability models that enable third-party applications and JD Edwards EnterpriseOne to share logic and data
+* JD Atina Web Service Microservice
+* JD Atina Rest-API Microservice
+* JD Atina Mule 3/4 CE Connector
+
+![Main Image](images/main.png "Main")
+
+
+## JD ATINA Web Service Microservice
+
+It's a simple Microservice used to consume JDE Web Services directly to Enterprise Service Logic instead use JDE Applications Server.
+
+It allows third party sofware to connect to JDE Web Services to share logic and data.
 
 It provides:
 
@@ -16,13 +26,7 @@ It provides:
 
 * Metadata introspection.
 
-Using connectors provides additional benefits, such as:
 
-* JD Web Service Microservice are scalable.
-
-* JD Web Service Microservice provide multi-threading.
-
-* JD Web Service Microservice enable concurrent users.
 
 ## Implementations
 
