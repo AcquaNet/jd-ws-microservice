@@ -71,16 +71,9 @@ The following implementation steps need to be performed before working with JD W
 
 It not requires for docker version.
 
- - JDK 8 installed with JAVA_HOME configured appropriately (it will use it to run addional tools as java application instead of use Docker version)
+ - JDK 8 installed with JAVA_HOME configured appropriately
 
- - Apache Maven 3.8.1+.  
-
- ----------------------- ------------------------------------
-![Tip](images/note-icon.png)\ Verify Maven is using the Java you expect
-                        If you have multiple JDK’s installed it is not certain Maven will pick up the expected java and you could end up with unexpected results. 
-                        You can verify which JDK Maven uses by running mvn --version.
-
-----------------------------------------------------------------
+ - Apache Maven 3.8.1+.   
 
 > ![Tip](images/note-icon.png) 
                         Verify Maven is using the Java you expect
