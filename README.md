@@ -319,7 +319,7 @@ java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar -r "C:\Users\jgodi
 ### Using Docker
 
 ```bash
-docker run --rm -v /tmp/jde-lib-bundle:/tmp/jde-lib-bundle/ -i --name jd-create-jar-files 92455890/jd-create-jar-files:1.0.0
+docker run --rm -v /tmp/build_jde_libs:/tmp/build_jde_libs/ -i --name jd-create-jar-files 92455890/jd-create-jar-files:1.0.0
 ```
 
 ### Output 
@@ -358,7 +358,7 @@ mvn deploy:deploy-file -DgroupId=com.jdedwards -DartifactId=StdWebService -Dvers
 
 
 
-## Get and Run JD Microservice
+## Start JD Web Services Microservice / JDE Rest API Microservice
 
 ### Installation
 
