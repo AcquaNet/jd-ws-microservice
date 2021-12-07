@@ -67,7 +67,7 @@ The following implementation steps need to be performed before working with JD W
  - [Docker](  https://docs.docker.com/get-docker/ "Docker"). JDE Web Service Microserver run under Docker container.
 
  
-## Prerequisites to use JD Generate Configuration Files and JD Generate Jars Files Tools from java version. 
+## Addionals Prerequisites to use JD Generate Configuration Files and JD Generate Jars Files Tools from java version. 
 
 It not requires for docker version.
 
@@ -80,7 +80,9 @@ It not requires for docker version.
                         If you have multiple JDK’s installed it is not certain Maven will pick up the expected java and you could end up with unexpected results. 
                         You can verify which JDK Maven uses by running mvn --version.
  
- ## JD Generate Configuration Files Tool
+ # Set up a configuration
+
+## JD Generate Configuration Files Tool
 
 ![Configuration File Tool Image](images/IniTool.png "Configuration File Tool")
 
@@ -102,11 +104,16 @@ It takes all information from JDE Enterprise Server Manager using [REST API for 
 
 The tooll will require to select the HTML Client instance according to your environment. 
 
-You will need to review the jdeinterop.ini and jdbj.ini files before deploy it on JD WS Microservice.
+> ![Tip](images/note-icon.png) 
+                        At the endo of this process, You will need to review the jdeinterop.ini and jdbj.ini files before deploy it on JD WS Microservice.
+                        We recomend use this guide:
+                        * [Understanding jdeinterop.ini File]( https://docs.oracle.com/cd/E24705_01/doc.91/e24221/jdeinterop_java.htm#EOTCN00333 "Understanding jdeinterop.ini File")
 
-JDE Guides:
 
-* [Understanding jdeinterop.ini File]( https://docs.oracle.com/cd/E24705_01/doc.91/e24221/jdeinterop_java.htm#EOTCN00333 "Understanding jdeinterop.ini File")
+
+
+
+
 
 ### Using JAVA APP
 
