@@ -54,22 +54,33 @@ The following implementation steps need to be performed before working with JD W
 
 ## Prerequisites
 
- - JDE credential for HTML Client. User, Pasword, Environment and Role.
+ - Oracle JD Edwards EnterpriseOne HTML Client credential: User, Pasword, Environment and Role.
 
- - Oracle JD Edwards EnterpriseOne Server Manager credential. Ex. http://server:8999/manage/
+ - Oracle JD Edwards EnterpriseOne Server Manager credential: jde admin user, Pasword and url for Server Manager Ex. http://server:8999/manage/
 
  - Following folder inside JDE Deployment Server:
    - //Deplo/E920/MISC
    - //Deplo/E920/system/Classes
    - //Deplo/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib
    - //Deplo/E920/DV920/java/sbfjars
- 
- - JAVA Open JDK 8 
-
- - MAVEN
 
  - [Docker](  https://docs.docker.com/get-docker/ "Docker"). JDE Web Service Microserver run under Docker container.
 
+ 
+## Prerequisites to use JD Generate Configuration Files and JD Generate Jars Files Tools from java version. 
+
+It not requires for docker version.
+
+ - JDK 8 installed with JAVA_HOME configured appropriately (it will use it to run addional tools as java application instead of use Docker version)
+
+ - Apache Maven 3.8.1+.  
+
+ ----------------------- ------------------------------------
+![Tip](images/note-icon.png)\ Verify Maven is using the Java you expect
+                        If you have multiple JDK’s installed it is not certain Maven will pick up the expected java and you could end up with unexpected results. 
+                        You can verify which JDK Maven uses by running mvn --version.
+
+----------------------------------------------------------------
  ## JD Generate Configuration Files Tool
 
 ![Configuration File Tool Image](images/IniTool.png "Configuration File Tool")
