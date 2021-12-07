@@ -229,10 +229,12 @@ Copy files from JDE Deploment Server to the corresponding folders:
         
 | Destination                              | Source                                             |
 | ---------------------------------------- | -------------------------------------------------- |
-|tmp->build_jde_libs->JDBC_Vendor_Drivers  | //Deployment Server/E920/MISC/*                    |
-|tmp->build_jde_libs->system->Classes      | //Deployment Server/E920/system/Classes\*          |
-|tmp->build_jde_libs->system->JAS          | //Deployment Server/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib/*|
-|tmp->build_jde_libs->system->WS           | //Deployment Server/E920\DV920/java/sbfjars/*      |
+|/tmp  |                    |
+|/tmp/build_jde_libs        |                             |
+|   ->/JDBC_Vendor_Drivers  | //Deployment Server/E920/MISC/*                    |
+|   ->/system/Classes      | //Deployment Server/E920/system/Classes\*          |
+|   ->/system/JAS          | //Deployment Server/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib/*|
+|   ->/system/WS           | //Deployment Server/E920\DV920/java/sbfjars/*      |
 
  
 #### How define local Repository (localRepo option). 
@@ -264,19 +266,6 @@ mvn help:evaluate -Dexpression=settings.localRepository
 ```
 
 In this output we see **/root/.m2/repository**
-
-#### Configure settings.xml used by current maven (settings option). 
-
-This option is required to run this tool using JAVA apps locally
-
-This tool will require a settings.xml. 
-We recommend use settings.xml created in the previous process:
-```
-\tmp\build_jde_libs\settings.xml
-```
-
-In case use you want to use default setting.xml, you will need to include the 
-Atina profile inside **\tmp\build_jde_libs\settings.xml** and set this profile as default.
 
 ### Using JAVA APP
 
@@ -313,7 +302,7 @@ Options category 'startup':
 Run following command:
  
 ```bash
-java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar -r "C:\Users\jgodi\.m2\repository"
+java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar -r /root/.m2/repository
 ```
 
 ### Using Docker
