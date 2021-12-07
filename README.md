@@ -81,6 +81,12 @@ It not requires for docker version.
                         You can verify which JDK Maven uses by running mvn --version.
 
 ----------------------------------------------------------------
+
+> ![Tip](images/note-icon.png) 
+                        Verify Maven is using the Java you expect
+                        If you have multiple JDK’s installed it is not certain Maven will pick up the expected java and you could end up with unexpected results. 
+                        You can verify which JDK Maven uses by running mvn --version.
+ 
  ## JD Generate Configuration Files Tool
 
 ![Configuration File Tool Image](images/IniTool.png "Configuration File Tool")
