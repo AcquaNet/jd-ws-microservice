@@ -105,15 +105,9 @@ It takes all information from JDE Enterprise Server Manager using [REST API for 
 The tooll will require to select the HTML Client instance according to your environment. 
 
 > ![Tip](images/note-icon.png) 
-                        At the endo of this process, You will need to review the jdeinterop.ini and jdbj.ini files before deploy it on JD WS Microservice.
-                        We recomend use this guide:
+                        At the end of this process, We recommend review jdeinterop.ini and jdbj.ini files 
+                        before deploy it on JD Web Service Microservice using this guide:
                         * [Understanding jdeinterop.ini File]( https://docs.oracle.com/cd/E24705_01/doc.91/e24221/jdeinterop_java.htm#EOTCN00333 "Understanding jdeinterop.ini File")
-
-
-
-
-
-
 
 ### Using JAVA APP
 
@@ -150,7 +144,13 @@ java -jar jd-create-ini-files-1.0.0-jar-with-dependencies.jar -u jde_admin -p XX
 
 ```
 
-Output 
+### Using Docker
+
+```bash
+docker run --rm -v /tmp/build_jde_libs:/tmp/build_jde_libs/ -i --name jd-create-ini-files 92455890/jd-create-ini-files:1.0.0 jde_admin jde_password JPS920 http://servermanager.com:8999/manage
+```
+
+### Reviewing Output
 
 ```bash
 Folder : /tmp/build_jde_libs/JPS920 has been created
@@ -201,31 +201,21 @@ build_jde_libs
 
 Adding manually "tnsnames.ora" for Oracle RDBMS based installations only.
 
-### Using Docker
-
-```bash
-docker run --rm -v /tmp/build_jde_libs:/tmp/build_jde_libs/ -i --name jd-create-ini-files 92455890/jd-create-ini-files:1.0.0 jde_admin jde_password JPS920 http://servermanager.com:8999/manage
-```
 
 
 ## JD Generate Jars Files
 
 This tool will generate all jars files need it by JD Web Service Microservice.
 
-### Installation
-
-Download [JD Generate Jar Files]( http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-jar-files/1.0.0/jd-create-jar-files-1.0.0-jar-with-dependencies.jar "Generator") - latest release: 
-
-```
-curl http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-jar-files/1.0.0/jd-create-jar-files-1.0.0-jar-with-dependencies.jar --output jd-create-jar-files-1.0.0-jar-with-dependencies.jar
-```
+![Configuration File Tool Image](images/JarTool.png "Configuration File Tool")
 
 #### Preparing folders
 
-Create **/tmp/jde-lib-bundle** folder with the following structure:
+Create folder with the following structure under **/tmp/build_jde_libs**:
 
 ```
-jde-lib-bundle
+tmp
+└─build_jde_libs
       ├─ JDBC_Vendor_Drivers
       └─ system
          │─ Classes 
@@ -237,35 +227,19 @@ jde-lib-bundle
 Copy files from JDE Deploment Server to the corresponding folders:
   
         
-| Destination                       | Source      |
-| -------------------------- | ------------------ |
-|JDBC_Vendor_Drivers               | //Deployment Server/E920/MISC/* |
-|system->Classes                   | //Deployment Server/E920/system/Classes\*   |
-|system->JAS                       | //Deployment Server/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib/*|
-|system->WS                        | //Deployment Server/E920\DV920/java/sbfjars/* |
+| Destination                              | Source                                             |
+| ---------------------------------------- | -------------------------------------------------- |
+|tmp->build_jde_libs->JDBC_Vendor_Drivers  | //Deployment Server/E920/MISC/*                    |
+|tmp->build_jde_libs->system->Classes      | //Deployment Server/E920/system/Classes\*          |
+|tmp->build_jde_libs->system->JAS          | //Deployment Server/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib/*|
+|tmp->build_jde_libs->system->WS           | //Deployment Server/E920\DV920/java/sbfjars/*      |
 
  
-#### Create Jars File
+#### How define local Repository (localRepo option). 
 
-```bash
-Usage: java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar OPTIONS
+This option is required to run this tool using JAVA apps locally
 
-Options category 'startup':
-  --jdbcDriver [-j] (a string; default: "/tmp/build_jde_libs/JDBC_Vendor_Drivers")
-    Enter JDBC Driver Folder
-  --jdeInstallPath [-i] (a string; default: "/tmp/build_jde_libs/")
-    Enter JDE Path installed
-  --localRepo [-r] (a string; default: "")
-    Enter Maven Local Repo
-  --settings [-s] (a string; default: "")
-    settings.xml to use Ex. /apache-maven-3.8.1/conf/settings.xml
-  --version [-o] (a string; default: "1.0.0")
-    Enter Version
-```
-
-#### How define local Repository (localRepo option)
-
-Running this command you can get where the local repository is defined:
+Running this command you can get where the curret local repository is defined:
 
 ```bash
 mvn help:evaluate -Dexpression=settings.localRepository
@@ -280,7 +254,7 @@ mvn help:evaluate -Dexpression=settings.localRepository
 [INFO] --- maven-help-plugin:3.2.0:evaluate (default-cli) @ standalone-pom ---
 [INFO] No artifact parameter specified, using 'org.apache.maven:standalone-pom:pom:1' as project.
 [INFO]
-/root/.m2/repository  <=====================
+/root/.m2/repository  <==  ****** THIS IS THE VALUE REQUIRED *******
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
@@ -289,44 +263,66 @@ mvn help:evaluate -Dexpression=settings.localRepository
 [INFO] ------------------------------------------------------------------------
 ```
 
-#### How configure global level settings.xml to have correct repositories. (settings option)
+In this output we see **/root/.m2/repository**
 
-* Get Maven Home locaction:
+#### Configure settings.xml used by current maven (settings option). 
 
-```bash
-mvn --version
+This option is required to run this tool using JAVA apps locally
+
+This tool will require a settings.xml. 
+We recommend use settings.xml created in the previous process:
+```
+\tmp\build_jde_libs\settings.xml
 ```
 
-```bash
-Apache Maven 3.6.3
-Maven home: /usr/share/maven  < ==============================
-Java version: 1.8.0_292, vendor: Private Build, runtime: /usr/lib/jvm/java-8-openjdk-amd64/jre
-Default locale: en, platform encoding: UTF-8
-OS name: "linux", version: "5.4.0-73-generic", arch: "amd64", family: "unix"
+In case use you want to use default setting.xml, you will need to include the 
+Atina profile inside **\tmp\build_jde_libs\settings.xml** and set this profile as default.
+
+### Using JAVA APP
+
+Download [JD Generate Jar Files]( http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-jar-files/1.0.0/jd-create-jar-files-1.0.0-jar-with-dependencies.jar "Generator") - latest release: 
 
 ```
+curl http://157.245.236.175:8081/artifactory/libs-release-local/com/atina/jd-create-jar-files/1.0.0/jd-create-jar-files-1.0.0-jar-with-dependencies.jar --output jd-create-jar-files-1.0.0-jar-with-dependencies.jar
+```
 
-In this example the setting is: *[Maven home]*  + *conf/settings.xml*
- 
-* Configure Setting.xml
+#### Create Jars File
 
-By default, this process will use settings.xml created in the previous process.
+```bash
+Usage: java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar OPTIONS
 
-You can configure you own settings.xml adding profile inside *\tmp\build_jde_libs\settings.xml*
+Options category 'startup':
+  --accion [-a] (a string; default: "3")
+    Accion: 1: Generate JDE Bundle 2: Build WS 3: Both
+  --clean [-c] (a string; default: "Y")
+    clean
+  --jdbcDriver [-j] (a string; default: "/tmp/build_jde_libs/JDBC_Vendor_Drivers")
+    Enter JDBC Driver Folder
+  --jdeInstallPath [-i] (a string; default: "/tmp/build_jde_libs/")
+    Enter JDE Path installed
+  --localRepo [-r] (a string; default: "")
+    Enter Maven Local Repo
+  --settings [-s] (a string; default: "/tmp/build_jde_libs/settings.xml")
+    settings.xml to use Ex. /apache-maven-3.8.1/conf/settings.xml
+  --version [-o] (a string; default: "1.0.0")
+    Enter Version
+```
 
-Remember to configure this profile as default.
-
-### Usage Generate Jars Files Exampes
+#### Usage Generate Jars Files Exampes
 
 Run following command:
-
-(Note use previous steps to define -r and -s options )
-
+ 
 ```bash
-java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar -i /tmp/build_jde_libs/ -j /tmp/build_jde_libs/JDBC_Vendor_Drivers -r /root/.m2/repository/ -o 1.0.0 -s /tmp/build_jde_libs/settings.xml
+java -jar jd-create-jar-files-1.0.0-jar-with-dependencies.jar -r "C:\Users\jgodi\.m2\repository"
 ```
 
-Output 
+### Using Docker
+
+```bash
+docker run --rm -v /tmp/jde-lib-bundle:/tmp/jde-lib-bundle/ -i --name jd-create-jar-files 92455890/jd-create-jar-files:1.0.0
+```
+
+### Output 
 
 ```bash
 ------------------------------------------------------------------------
@@ -348,8 +344,9 @@ build_jde_libs
 
 #### Deploy artifact to Local Repository - Optional
 
-At startup, JD Microservice has the option to get these libraries from an internal repository.
 This optional. 
+At startup, JD Microservice has the option to get these libraries from an internal repository.
+ 
 
 In case you want to use a local repository, exectute the following command:
 
