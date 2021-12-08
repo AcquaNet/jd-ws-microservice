@@ -201,6 +201,13 @@ build_jde_libs
 
 Adding manually "tnsnames.ora" for Oracle RDBMS based installations only.
 
+Edit **jdeinterop.ini** and change the following values
+
+```bash
+[DNS_SERVERS]
+JDE-ENT=2.2.2.2
+JDE-SQL=1.1.1.1
+```
 
 
 ## JD Generate Jars Files
