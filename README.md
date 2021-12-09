@@ -375,42 +375,22 @@ Unzip JD Docker Composer Files (**jd-docker-files-1.0.0.zip**) downloaded in a t
 
 Edit .env file and change the following values:
 
-#### Customer repository
+#### DNS defintion
 
-Microservice Server
+Use [DNS_SERVERS] section inside jdeinterop.ini files to complete theses values:
 
-| Parameter                | Comment      | 
-| -------------------------- | ------------------ |
-|JDE_MICROSERVER_IP   |172.28.0.2|
-|JDE_MICROSERVER_PORT |8077|
- 
-For Local repository:
-
-| Parameter                | Comment      | 
-| -------------------------- | ------------------ |
-|CUSTOMER_REPOSITORY_PROTOCOL   |http|
-|CUSTOMER_REPOSITORY_URL        |local-repository:8081/artifactory/libs-release|
-|JDE_GET_LIB_WRAPPED_UPDATE_FROM_REPOSITORY|1|
-|JDE_GET_LIB_WEB_SERVICE_FROM_REPOSITORY|1|
-
-For non Local repository:
-
-| Parameter                | Comment      | 
-| -------------------------- | ------------------ |
-|CUSTOMER_REPOSITORY_PROTOCOL   ||
-|CUSTOMER_REPOSITORY_URL        ||
-|JDE_GET_LIB_WRAPPED_UPDATE_FROM_REPOSITORY|0|
-|JDE_GET_LIB_WEB_SERVICE_FROM_REPOSITORY|0|
-
-#### dns defintion
-
-| Parameter                | Comment      | 
-| -------------------------- | ------------------ |
-|JDE_MICROSERVER_ENTERPRISE_SERVER_NAME   |JDE-ENT|
-|JDE_MICROSERVER_ENTERPRISE_SERVER_IP        |222.222.222.1|
-|JDE_MICROSERVER_ENTERPRISE_DB_NAME|JDE-DB|
-|JDE_MICROSERVER_ENTERPRISE_DB_IP|222.222.222.2|
-
+```bash
+#
+# ====================================
+# ETC/HOST
+# ====================================
+#
+JDE_MICROSERVER_ENTERPRISE_SERVER_NAME=JDE-ENT
+JDE_MICROSERVER_ENTERPRISE_SERVER_IP=1.1.1.1
+JDE_MICROSERVER_ENTERPRISE_DB_NAME=JDE-DATABASE 
+JDE_MICROSERVER_ENTERPRISE_DB_IP=2.2.2.2
+#
+```
 
 ### Create and Run JD Microservice
 
@@ -422,7 +402,7 @@ Create Container
 docker-compose -f docker-compose-dist.yml up --no-start
 ```
 
-Copy files into Container
+Copy files Configuration files and jars files into Container
 
 ```bash
 docker cp /tmp/build_jde_libs/JPS920 jd-atina-microserver:/tmp/jde/config
@@ -430,13 +410,15 @@ docker cp /tmp/build_jde_libs/jde-lib-wrapped-1.0.0.jar jd-atina-microserver:/tm
 docker cp /tmp/build_jde_libs/StdWebService-1.0.0.jar jd-atina-microserver:/tmp/jde
 ```
 
-Run Container
+Run Containers
 
 ```bash
 docker-compose -f docker-compose-dist.yml start
 ```
 
-Check starting process
+### Check JD WS Microservice startup
+
+Check starting process for JD Atina WS Microservice
 
 ```bash
 docker exec -it jd-atina-microserver cat /tmp/start.log
@@ -475,6 +457,7 @@ ADDITIONAL SCRIPT:
  Check log cat /tmp/jde/JDEConnectorServerLog/jd_atina_server_2021-11-18.0.log
 ```
 
+At the end of the logs, you will the log that you need to check. Run the following docker command:
 
 ```bash
 docker exec -it jd-atina-microserver cat /tmp/jde/JDEConnectorServerLog/jde_atina_server_2021-11-18.0.log
@@ -494,8 +477,31 @@ The other way to see the logs is the following command:
 docker logs jd-atina-microserver
 ```
 
+### Check JD Rest API Microservice startup
 
+```bash
+docker logs jd-atina-rest-server
+```
 
+Output
+
+```bash
+exec java -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -XX:+ExitOnOutOfMemoryError -cp . -jar /deployments/quarkus-run.jar
+           ,ggg,
+          dP""8I    I8
+         dP   88    I8
+        dP    88 88888888 gg
+       ,8'    88    I8    ""
+       d88888888    I8    gg    ,ggg,,ggg,     ,gggg,gg
+ __   ,8"     88    I8    88   ,8" "8P" "8,   dP"  "Y8I
+dP"  ,8P      Y8   ,I8,   88   I8   8I   8I  i8'    ,8I
+Yb,_,dP       `8b,,d88b,_,88,_,dP   8I   Yb,,d8,   ,d8b,
+ "Y8P"         `Y88P""Y88P""Y88P'   8I   `Y8P"Y8888P"`Y8
+                          Powered by Quarkus 2.5.0.Final
+19:32:14 INFO  [io.quarkus] (main) jd-atina-rest-server 1.0.0 on JVM (powered by Quarkus 2.5.0.Final) started in 8.869s. Listening on: http://0.0.0.0:8081 and https://0.0.0.0:8082
+19:32:14 INFO  [io.quarkus] (main) Profile prod activated.
+19:32:14 INFO  [io.quarkus] (main) Installed features: [cdi, logging-gelf, qute, resteasy, resteasy-jackson, resteasy-qute, scheduler, smallrye-context-propagation, smallrye-openapi, swagger-ui, vertx]
+```
 
 
 
