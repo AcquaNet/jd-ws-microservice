@@ -503,11 +503,14 @@ Yb,_,dP       `8b,,d88b,_,88,_,dP   8I   Yb,,d8,   ,d8b,
 19:32:14 INFO  [io.quarkus] (main) Installed features: [cdi, logging-gelf, qute, resteasy, resteasy-jackson, resteasy-qute, scheduler, smallrye-context-propagation, smallrye-openapi, swagger-ui, vertx]
 ```
 
+Go to API defintions:
+
+[https://localhost/swagger/]( https://localhost/swagger/ "https://localhost/swagger/")
 
 
 
  
-## JDE Check JD Microservice
+## JDE Check JD Microservice executing a Web Service
  
 This tool is used to test JD Microservice. 
 It will invoke a simple WS.
@@ -567,7 +570,7 @@ Address Book Name: Financial/Distribution Company --
 User User: JDE in environment JDV920 with *ALL disconnected. Current session ID 0
 ------------------------------------------------------------------------
 ``` 
-## Install Mulesoft JDE WS CE Connector
+## Install Mulesoft JDE WS CE Connector Mule 3
 
 The Atina JDE Web Service Connector CE provides interoperability with Oracle’s JD Edwards EnterpriseOne™ it allow consume all JDE Web Services published
 
@@ -598,23 +601,3 @@ Install From the Studio Help Menu:
 
 
 
-## JD Docker Composer Files - Environment .env detail
- 
-### Atina Repository
-
-This repository is used to get updates for JD Microservice.
-
-| Parameter                | Comment      | 
-| -------------------------- | ------------------ |
-|ATINA_REPOSITORY_PROTOCOL   |Atina repository Protocol|
-|ATINA_REPOSITORY_URL        |Atina repository URL |
-
-
-This is the customer repository is used to artifact:
-This is optional.
-
-
-| Parameter                | Comment      | 
-| -------------------------- | ------------------ |
-|CUSTOMER_REPOSITORY_PROTOCOL|//Deployment Server/E920/system/JAS/webclient.ear/webclient.war/WEB-INF/lib/*|
-|CUSTOMER_REPOSITORY_URL     | //Deployment Server/E920\DV920/java/sbfjars/* |
