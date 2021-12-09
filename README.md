@@ -209,6 +209,7 @@ JDE-ENT=2.2.2.2
 JDE-SQL=1.1.1.1
 ```
 
+The process Generate Ini Files will include both Logic Server and Database Server. You will need to set the correct ip's.
 
 ## JD Generate Jars Files
 
